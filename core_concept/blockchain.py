@@ -1,10 +1,16 @@
+from util.hash import generate_hash
 class Block:
-    def __init__(self, data, hash):
+    def __init__(self, data, hash, prev_hash, time_stamp):
         self.data = data
         self.__hash = hash
+        self.__prev_hash = prev_hash
+        self.time_stamp = time_stamp
         
     def get_hash(self):
         return self.__hash   
+    def get_prev_hash(self):
+        return self.__prev_hash
+       
 
 class BlockChain:
     genisis_hash = 100000001
