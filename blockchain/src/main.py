@@ -21,10 +21,10 @@ class Block:
     self.__current_hash = current_hash
     self.agreement = agreement
 
-    def get_prev_hash(self):
+  def get_prev_hash(self):
       return self.__prev_hash
 
-    def get_current_hash(self):
+  def get_current_hash(self):
       return self.__current_hash
     
 class BlockChain:
@@ -42,16 +42,25 @@ class BlockChain:
     date = datetime.datetime.now()
     agreement = f"This block was created on: {date}" 
     _hash = generate_hash(f"{date}{agreement}")
-    block = Block(time_stamp=date, agreement=agreement, prev_hash=_hash, current_hash=_hash, sender="System", receiver=None, amount=None)
+    block = Block(time_stamp=date, agreement=agreement, prev_hash=None, current_hash=_hash, sender="System", receiver=None, amount=None)
     self.chain.append(block)
   
-    
-  
-genisis = BlockChain()
-genisis.create_genisis_block()
+  def add_block(self, sender, reciever, amount):
+    date = datetime.datetime.now()
+    prev_hash = self.chain[len(self.chain)-1].get_current_hash()
+    agreement = f"{sender} sends {amount}-/ to {reciever} on {date}"
+    current_hash = agreement + prev_hash
+    new_block = Block(sender=sender, receiver=reciever, time_stamp=date,amount=amount,prev_hash=prev_hash, current_hash=current_hash,agreement=agreement)
 
-for block in genisis.chain:
+    self.chain.append(new_block)
+  
+blockChain = BlockChain()
+blockChain.create_genisis_block()
+blockChain.add_block("Saumya","Roshan",1322)
+
+for block in blockChain.chain:
   print(block.time_stamp)
   print(block.agreement)
   print(block.sender)
   print(block.receiver)
+  print("-------")
